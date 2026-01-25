@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마우스 피하기 게임</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="ui-layer">
+        <div id="score-board">Time: <span id="score">0.00</span>s</div>
+        <div id="start-screen" class="screen active">
+            <h1>AVOID</h1>
+            <p>마우스를 움직여 적들을 피하세요!</p>
+            <p class="sub-text">화면을 클릭하여 시작</p>
+        </div>
+        <div id="game-over-screen" class="screen">
+            <h1>GAME OVER</h1>
+            <p>생존 시간: <span id="final-score">0.00</span>s</p>
+            <button id="restart-btn">다시 하기</button>
+        </div>
+        <div id="level-up-screen" class="screen">
+            <h2>LEVEL UP!</h2>
+            <div id="card-container"></div>
+        </div>
+        <div id="xp-container">
+            <div id="level-indicator">Lv.1</div>
+            <div id="xp-bar-bg">
+                <div id="xp-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    <script src="script.js"></script>
+</body>
+
+</html>
