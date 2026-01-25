@@ -128,12 +128,12 @@ window.addEventListener('mousemove', (e) => {
 });
 
 window.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Stop scroll
+    // e.preventDefault(); // Removed to allow click events on buttons
     handleInput(e.touches[0].clientX, e.touches[0].clientY);
 }, { passive: false });
 
 window.addEventListener('touchmove', (e) => {
-    e.preventDefault(); // Stop scroll
+    // e.preventDefault(); 
     handleInput(e.touches[0].clientX, e.touches[0].clientY);
 }, { passive: false });
 
