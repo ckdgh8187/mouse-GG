@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Block Blast Clone - Anti-Gravity</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="ui-layer">
+            <!-- Global HUD (Gold) -->
+            <div id="gold-hud" class="hidden">
+                <div class="gold-container">
+                    <div class="coin-icon"></div>
+                    <span id="gold-value">0</span>
+                </div>
+            </div>
+
+            <!-- Main Menu Screen -->
+            <div id="main-menu" class="ui-screen">
+                <img src="asset/image/logo.png" alt="Block Blast Logo" class="main-logo">
+                <div class="menu-buttons">
+                    <button id="start-game-btn" class="main-btn">Game Start</button>
+                    <button id="shop-btn" class="secondary-btn">SHOP</button>
+                </div>
+            </div>
+
+            <!-- Mode Selection Screen -->
+            <div id="mode-selection" class="ui-screen hidden">
+                <h2>Select Mode</h2>
+                <div class="mode-buttons">
+                    <button id="challenge-mode-btn" class="main-btn">Challenge Mode</button>
+                    <button id="stage-mode-btn" class="main-btn locked">Stage Mode</button>
+                </div>
+                <button id="back-to-menu-btn" class="text-btn">Back</button>
+            </div>
+
+            <!-- Shop Screen -->
+            <div id="shop-screen" class="ui-screen hidden">
+                <div class="shop-container glass-panel">
+                    <h2 class="shop-title">ITEM SHOP</h2>
+
+                    <div class="shop-items-grid">
+                        <!-- Individual Items with Inventory Count -->
+                        <div class="shop-item" data-item="bomb" data-price="50">
+                            <div class="item-icon bomb">💣</div>
+                            <div class="item-info">
+                                <span class="item-name">BOMB</span>
+                                <span class="item-price">50G</span>
+                                <span class="item-owned">OWNED: <span id="owned-bomb">0</span></span>
+                            </div>
+                            <button class="buy-btn">BUY</button>
+                        </div>
+                        <div class="shop-item" data-item="laser" data-price="65">
+                            <div class="item-icon laser">🚀</div>
+                            <div class="item-info">
+                                <span class="item-name">LASER</span>
+                                <span class="item-price">65G</span>
+                                <span class="item-owned">OWNED: <span id="owned-laser">0</span></span>
+                            </div>
+                            <button class="buy-btn">BUY</button>
+                        </div>
+                        <div class="shop-item" data-item="hourglass" data-price="85">
+                            <div class="item-icon hourglass">⏳</div>
+                            <div class="item-info">
+                                <span class="item-name">HOURGLASS</span>
+                                <span class="item-price">85G</span>
+                                <span class="item-owned">OWNED: <span id="owned-hourglass">0</span></span>
+                            </div>
+                            <button class="buy-btn">BUY</button>
+                        </div>
+
+                        <!-- Bundle Items -->
+                        <div class="shop-item bundle" data-item="bomb_5" data-price="225">
+                            <div class="item-icon">💣 x5</div>
+                            <div class="item-info">
+                                <span class="item-name">BOMB BUNDLE</span>
+                                <span class="item-price"><del>250G</del> 225G</span>
+                                <span class="discount-badge">-10%</span>
+                            </div>
+                            <button class="buy-btn">BUY</button>
+                        </div>
+                        <div class="shop-item bundle" data-item="laser_5" data-price="290">
+                            <div class="item-icon">🚀 x5</div>
+                            <div class="item-info">
+                                <span class="item-name">LASER BUNDLE</span>
+                                <span class="item-price"><del>325G</del> 290G</span>
+                                <span class="discount-badge">-11%</span>
+                            </div>
+                            <button class="buy-btn">BUY</button>
+                        </div>
+                        <div class="shop-item bundle" data-item="hourglass_5" data-price="380">
+                            <div class="item-icon">⏳ x5</div>
+                            <div class="item-info">
+                                <span class="item-name">WATCH BUNDLE</span>
+                                <span class="item-price"><del>425G</del> 380G</span>
+                                <span class="discount-badge">-11%</span>
+                            </div>
+                            <button class="buy-btn">BUY</button>
+                        </div>
+                        <div class="shop-item bundle starter" data-item="all_set" data-price="180">
+                            <div class="item-icon">🎁 SET</div>
+                            <div class="item-info">
+                                <span class="item-name">STARTER SET</span>
+                                <span class="item-price"><del>200G</del> 180G</span>
+                                <span class="discount-badge">-10%</span>
+                            </div>
+                            <button class="buy-btn">BUY</button>
+                        </div>
+                    </div>
+
+                    <button id="close-shop-btn" class="secondary-btn">CLOSE</button>
+                </div>
+            </div>
+
+            <!-- Gameplay UI (HUD) -->
+            <div id="gameplay-ui" class="hidden">
+                <div class="score-container">
+                    <span id="score-label">SCORE</span>
+                    <span id="score-value">0</span>
+                    <div id="best-score-container">
+                        <span id="best-label">BEST: </span>
+                        <span id="best-value">0</span>
+                    </div>
+                </div>
+
+                <!-- In-game Items Bar -->
+                <div id="item-bar">
+                    <div class="game-item" data-item="bomb" id="game-item-bomb">
+                        <div class="item-icon">💣</div>
+                        <span class="item-count">0</span>
+                    </div>
+                    <div class="game-item" data-item="laser" id="game-item-laser">
+                        <div class="item-icon">⚡</div>
+                        <span class="item-count">0</span>
+                    </div>
+                    <div class="game-item" data-item="hourglass" id="game-item-hourglass">
+                        <div class="item-icon">⏳</div>
+                        <span class="item-count">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="ui-screen hidden">
+                <h1>GAME OVER</h1>
+                <div class="final-score-container">
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <div id="new-best-badge" class="hidden">BEST!</div>
+                </div>
+                <div id="new-best-effect" class="celebration-text hidden">NEW RECORD<span class="exclamation">!</span>
+                </div>
+                <div class="end-buttons">
+                    <button id="restart-btn" class="main-btn">Try Again</button>
+                    <button id="exit-to-menu-btn" class="secondary-btn">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/SoundAssets.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>
