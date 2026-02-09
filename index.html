@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>두쫀쿠 클리커</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="game-container">
+        <!-- Header / Stats -->
+        <header id="stats-bar">
+            <div class="stat-card money">
+                <span class="label">자산</span>
+                <span class="value"><span id="money-display">0</span>원</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">두쫀쿠</span>
+                <span class="value"><span id="dzc-count-display">0</span>개</span>
+            </div>
+            <div class="stat-row">
+                <div class="stat-pill">
+                    <span class="label">🏠 매장</span>
+                    <span id="shop-size-display">10</span>평
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Clicker Area -->
+        <main id="clicker-area">
+            <div id="store-toggle-container">
+                <span class="label">가게 오픈</span>
+                <label class="switch">
+                    <input type="checkbox" id="store-toggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div id="dzc-button-container">
+                <img src="asset/image/DZC.png" alt="두쫀쿠" id="dzc-button">
+                <div id="click-effect-container"></div>
+                <div id="auto-click-timer" style="display: none;">
+                    <span class="boost-icon">⚡</span>
+                    <span id="auto-click-time-display">10:00</span>
+                </div>
+            </div>
+            <!-- Customer Area Removed -->
+        </main>
+
+        <!-- Dynamic Menu (Upgrades, Expansion, Move) -->
+        <section id="menu-area">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="production">생산</button>
+                <button class="tab-btn" data-tab="marketing">마케팅</button>
+                <button class="tab-btn" data-tab="staff">알바</button>
+                <button class="tab-btn" data-tab="expansion">확장</button>
+                <button class="tab-btn" data-tab="shop">상점</button>
+            </div>
+
+            <div class="tab-content active" id="production-tab">
+                <button class="upgrade-btn" id="upgrade-click">
+                    <span class="name">제작 강화</span>
+                    <span class="desc">클릭당 생산량 증가</span>
+                    <div class="milestone-gauge-container">
+                        <div id="click-milestone-bar" class="milestone-gauge-bar"></div>
+                    </div>
+                    <div class="milestone-gauge-container">
+                        <div id="click-milestone-bar-500" class="milestone-gauge-bar"></div>
+                    </div>
+                    <span class="cost"><img src="asset/image/DZC_icon.png" class="cost-icon"> <span
+                            id="cost-click">10</span></span>
+                </button>
+                <button class="upgrade-btn" id="upgrade-pack">
+                    <span class="name">포장 개선 Lv.1</span>
+                    <span class="desc">최소 구매 개수 : 1개</span>
+                    <span class="cost"><img src="asset/image/DZC_icon.png" class="cost-icon"> <span
+                            id="cost-pack">5,000</span></span>
+                </button>
+                <button class="upgrade-btn" id="upgrade-gift">
+                    <span class="name">선물 패키징 Lv.1</span>
+                    <span class="desc">최대 구매 개수 : 1개</span>
+                    <span class="cost"><img src="asset/image/DZC_icon.png" class="cost-icon"> <span
+                            id="cost-gift">1,000</span></span>
+                </button>
+            </div>
+
+            <div class="tab-content" id="marketing-tab">
+                <button class="upgrade-btn" id="upgrade-price">
+                    <span class="name">고급 마케팅 Lv.1</span>
+                    <span class="desc">두쫀쿠 가격 : 10원</span>
+                    <div class="milestone-gauge-container">
+                        <div id="price-milestone-bar" class="milestone-gauge-bar"></div>
+                    </div>
+                    <span class="cost"><img src="asset/image/DZC_icon.png" class="cost-icon"> <span
+                            id="cost-price">100</span></span>
+                </button>
+                <button class="upgrade-btn" id="upgrade-speed">
+                    <span class="name">광고 마케팅 Lv.1</span>
+                    <span class="desc">두쫀쿠 판매 속도 향상</span>
+                    <span class="cost"><img src="asset/image/DZC_icon.png" class="cost-icon"> <span
+                            id="cost-speed">30</span></span>
+                </button>
+                <button class="upgrade-btn" id="upgrade-sns">
+                    <span class="name">SNS 마케팅 Lv.0</span>
+                    <span class="desc">추가 손님 등장 확률 +0.0%</span>
+                    <span class="cost"><img src="asset/image/DZC_icon.png" class="cost-icon"> <span
+                            id="cost-sns">50</span></span>
+                </button>
+                <button class="upgrade-btn" id="upgrade-youtube">
+                    <span class="name">유튜브 마케팅 (잠김)</span>
+                    <span class="desc">SNS 마케팅 Lv.300 달성 시 오픈</span>
+                    <span class="cost"><img src="asset/image/DZC_icon.png" class="cost-icon"> <span
+                            id="cost-youtube">15,000</span></span>
+                </button>
+            </div>
+
+            <div class="tab-content" id="staff-tab">
+                <button class="upgrade-btn" id="hire-staff">
+                    <span class="name" id="hire-staff-name">알바 고용 Lv.0</span>
+                    <span class="desc">알바를 고용하여 자동생산을 합니다.</span>
+                    <span class="cost">비용: <span id="cost-staff">200</span>원</span>
+                </button>
+                <div class="staff-info">현재 알바: <span id="staff-count">0</span> / <span id="max-staff">5</span>명</div>
+                <div id="individual-staff-list" style="margin-top: 20px;">
+                    <!-- Individual staff upgrades will be injected here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="expansion-tab">
+                <button class="upgrade-btn" id="expand-shop" disabled>
+                    <span class="name">가게 증축 (+10평)</span>
+                    <span class="desc">매장을 넓혀 더 많은 알바를 고용하세요</span>
+                    <span class="cost">비용: 50,000,000원</span>
+                </button>
+                <button class="upgrade-btn" id="move-tokyo" disabled>
+                    <span class="name">도쿄 진출</span>
+                    <span class="desc">조건: 40평 달성</span>
+                    <span class="cost">비용: 100,000,000원</span>
+                </button>
+                <button class="upgrade-btn" id="reset-data"
+                    style="margin-top: 20px; border: 1px solid #e74c3c; background: #fff0f0;">
+                    <span class="name" style="color: #c0392b;">데이터 초기화</span>
+                    <span class="desc">모든 진행 상황이 삭제됩니다!</span>
+            </div>
+
+            <div class="tab-content" id="shop-tab">
+                <button class="upgrade-btn" id="activate-auto-click">
+                    <span class="name">자동 클릭 활성화 (10분)</span>
+                    <span class="desc">초당 5회의 속도로 자동 클릭을 진행합니다.</span>
+                    <span class="cost"><span style="color: #27ae60;">FREE</span></span>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tokyo Branch UI (Hidden by default) -->
+    <div id="tokyo-container" style="display: none;">
+        <header id="tokyo-stats-bar">
+            <div class="stat-item">
+                <span class="label">엔화:</span>
+                <span id="yen-display">0</span> 엔
+            </div>
+            <div class="stat-item">
+                <span class="label">환율 (100엔):</span>
+                <span id="exchange-rate-display">1000</span> 원
+            </div>
+        </header>
+
+        <main id="tokyo-area">
+            <h2>도쿄 지점</h2>
+            <div id="tokyo-production-status">
+                <p>자동 생산 중...</p>
+                <p>딸기 두쫀쿠: <span id="strawberry-count">0</span> / 모찌 두쫀쿠: <span id="mochi-count">0</span></p>
+            </div>
+            <button id="exchange-btn" class="action-btn">
+                원화로 환전 (수수료 15%)
+            </button>
+            <button id="back-to-seoul" class="action-btn">서울 본점 복귀</button>
+        </main>
+
+        <section id="tokyo-menu-area">
+            <h3>도쿄 관리</h3>
+            <button class="upgrade-btn" id="tokyo-hire-staff">
+                <span class="name">알바 고용 (도쿄)</span>
+                <span class="desc">초당 생산 (클릭 불가)</span>
+                <span class="cost">비용: <span id="tokyo-cost-staff">1000</span>엔</span>
+            </button>
+            <button class="upgrade-btn" id="tokyo-marketing-speed">
+                <span class="name">광고 마케팅</span>
+                <span class="desc">손님 방문 시간 단축</span>
+                <span class="cost">비용: <span id="tokyo-cost-speed">100</span>엔</span>
+            </button>
+            <button class="upgrade-btn" id="tokyo-marketing-price">
+                <span class="name">고급 마케팅</span>
+                <span class="desc">가격 인상 (기본 1엔)</span>
+                <span class="cost">비용: <span id="tokyo-cost-price">500</span>엔</span>
+            </button>
+            <button class="upgrade-btn" id="tokyo-new-menu">
+                <span class="name">신메뉴 개발</span>
+                <span class="desc">딸기/모찌 두쫀쿠 개발 (확률)</span>
+                <span class="cost">비용: <span id="tokyo-cost-menu">2000</span>엔</span>
+            </button>
+        </section>
+    </div>
+
+    <!-- Developer Cheats (Temporary) -->
+    <div id="debug-cheats">
+        <button onclick="cheatDzc()">DZC +1M</button>
+        <button onclick="cheatMoney()">Money +100</button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>
